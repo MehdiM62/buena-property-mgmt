@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id                       String      @id @default(uuid())
+  name                     String
+  object_number            String      @unique
+  management_type          ManagementType
+  status                   PropertyStatus @default(draft)
+  property_manager_name    String?
+  property_manager_company String?
+  accountant_name          String?
+  accountant_company       String?
+  document_url             String?
+  created_at               DateTime    @default(now())
+  updated_at               DateTime    @updatedAt
+
+  buildings   Building[]
+  extractions Extraction[]
+}
+
+model Building {
+  id                String   @id @default(uuid())
+  property_id       String
+  name              String
+  street            String
+  house_number      String
+  additional_info   String?
+  construction_year Int?
+  created_at        DateTime @default(now())
+
+  property Property @relation(fields: [property_id], references: [id], onDelete: Cascade)
+  units    Unit[]
+}
+
+model Unit {
+  id                  String   @id @default(uuid())
+  building_id         String
+  unit_number         String
+  type                UnitType
+  floor               String?
+  entrance            String?
+  size_sqm            Decimal  @db.Decimal(10, 2)
+  co_ownership_share  String
+  construction_year   Int?
+  rooms               Int?
+  created_at          DateTime @default(now())
+
+  building Building @relation(fields: [building_id], references: [id], onDelete: Cascade)
+}
+
+model Extraction {
+  id          String           @id @default(uuid())
+  property_id String
+  status      ExtractionStatus @default(pending)
+  raw_result  Json?
+  created_at  DateTime         @default(now())
+
+  property Property @relation(fields: [property_id], references: [id], onDelete: Cascade)
+}
+
+enum ManagementType {
+  WEG
+  MV
+}
+
+enum PropertyStatus {
+  draft
+  active
+}
+
+enum UnitType {
+  apartment
+  office
+  garden
+  parking
+}
+
+enum ExtractionStatus {
+  pending
+  done
+  failed
+}

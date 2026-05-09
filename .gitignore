@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.next/
+build/
+
+# Prisma generated client (regenerated via `prisma generate`)
+backend/node_modules/
+
+# Environment files (contain secrets)
+.env
+backend/.env
+
+# Uploaded files
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
