@@ -49,7 +49,7 @@ upload the PDF, review the extracted data, and apply it in one click.
 │  TypeScript         │  API   │  Prisma ORM              │
 │  Tailwind CSS       │◀────── │  class-validator         │
 │  App Router         │        │  multer (file upload)    │
-└─────────────────────┘        └──────────┬───────────────┘
+└─────────────────────┘        └───────────┬──────────────┘
                                            │
                                 ┌──────────▼───────────────┐
                                 │  PostgreSQL 16           │
