@@ -45,10 +45,10 @@ upload the PDF, review the extracted data, and apply it in one click.
 
 ```
 ┌─────────────────────┐        ┌──────────────────────────┐
-│  Next.js 14 (3000)  │──────▶│  NestJS API (3001)       │
+│  Next.js 14 (3000)  │──────▶ │  NestJS API (3001)       │
 │  TypeScript         │  API   │  Prisma ORM              │
-│  Tailwind CSS       │◀──────│  class-validator          │
-│  App Router         │        │  multer (file upload)     │
+│  Tailwind CSS       │◀────── │  class-validator         │
+│  App Router         │        │  multer (file upload)    │
 └─────────────────────┘        └──────────┬───────────────┘
                                            │
                                 ┌──────────▼───────────────┐
