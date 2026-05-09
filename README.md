@@ -11,6 +11,36 @@ upload the PDF, review the extracted data, and apply it in one click.
 
 ---
 
+## Screenshots
+
+### Dashboard
+![Dashboard — property list with status badges and quick actions](docs/screenshots/dashboard.png)
+
+### Onboarding Wizard
+![Wizard — multi-step property setup with PDF upload](docs/screenshots/wizard.png)
+
+### Extraction Review
+![Extraction review — side-by-side PDF data confirmation before applying](docs/screenshots/extraction-review.png)
+
+### Unit Grid
+![Units grid — inline-editable table with bulk save](docs/screenshots/units-grid.png)
+
+---
+
+## Why This Workflow?
+
+> The design is opinionated. Here's why each choice was made deliberately.
+
+| Principle | Rationale |
+|-----------|-----------|
+| **No manual retyping** | Managers should not manually retype structured legal documents. A Teilungserklärung already contains every field — extraction surfaces it directly. |
+| **Review before apply** | Users review extracted data before it is committed. OCR artifacts and non-standard abbreviations in legal documents are common; silent errors cost more to fix than 30 seconds of review. |
+| **Bulk operations** | 60+ unit onboarding requires bulk insert. One API call per unit would hang the UI and leave partial state on failure. The grid saves all units in a single transaction. |
+| **Draft mode** | Incomplete onboarding sessions are the norm, not the exception. Draft status lets managers pause and resume without losing progress. |
+| **Inline editing** | Minimising page navigation reduces cognitive load. The unit grid lets managers correct extraction results and add missing units without leaving the wizard step. |
+
+---
+
 ## Architecture
 
 ```
