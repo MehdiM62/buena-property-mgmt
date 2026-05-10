@@ -1,5 +1,7 @@
 # Buena — Property Management Case Study
 
+## Video: https://www.loom.com/share/b04db7be486c45088606f5be20304cc6
+
 ## The Problem
 
 Property managers onboarding a 60-unit WEG property face hours of manual data entry.
