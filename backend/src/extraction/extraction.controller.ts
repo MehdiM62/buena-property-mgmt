@@ -3,13 +3,19 @@ import {
   Post,
   Get,
   Param,
+  Body,
   UploadedFile,
   UseInterceptors,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
+import { mkdirSync } from 'fs';
 import { ExtractionService } from './extraction.service';
+
+const uploadsDir = join(process.cwd(), 'uploads');
+mkdirSync(uploadsDir, { recursive: true });
 
 @Controller('properties/:propertyId')
 export class ExtractionController {
@@ -19,7 +25,7 @@ export class ExtractionController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(process.cwd(), 'uploads'),
+        destination: uploadsDir,
         filename: (_req, file, cb) => {
           const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, unique + extname(file.originalname));
@@ -29,7 +35,7 @@ export class ExtractionController {
         if (file.mimetype === 'application/pdf') {
           cb(null, true);
         } else {
-          cb(new Error('Only PDF files are allowed'), false);
+          cb(new BadRequestException('Only PDF files are allowed'), false);
         }
       },
     }),
@@ -48,7 +54,10 @@ export class ExtractionController {
   }
 
   @Post('extraction/apply')
-  applyExtraction(@Param('propertyId') propertyId: string) {
-    return this.extractionService.applyExtraction(propertyId);
+  applyExtraction(
+    @Param('propertyId') propertyId: string,
+    @Body() body?: { raw_result?: unknown },
+  ) {
+    return this.extractionService.applyExtraction(propertyId, body?.raw_result);
   }
 }

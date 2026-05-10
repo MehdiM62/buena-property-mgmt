@@ -100,22 +100,26 @@ export class ExtractionService {
     };
   }
 
-  async applyExtraction(propertyId: string) {
+  async applyExtraction(propertyId: string, overrideData?: unknown) {
     const property = await this.prisma.property.findUnique({
       where: { id: propertyId },
     });
     if (!property) throw new NotFoundException(`Property ${propertyId} not found`);
 
-    const extraction = await this.prisma.extraction.findFirst({
-      where: { property_id: propertyId, status: 'done' },
-      orderBy: { created_at: 'desc' },
-    });
+    let result: typeof MOCK_EXTRACTION_RESULT;
 
-    if (!extraction) {
-      throw new BadRequestException('No completed extraction found for this property');
+    if (overrideData) {
+      result = overrideData as typeof MOCK_EXTRACTION_RESULT;
+    } else {
+      const extraction = await this.prisma.extraction.findFirst({
+        where: { property_id: propertyId, status: 'done' },
+        orderBy: { created_at: 'desc' },
+      });
+      if (!extraction) {
+        throw new BadRequestException('No completed extraction found for this property');
+      }
+      result = extraction.raw_result as typeof MOCK_EXTRACTION_RESULT;
     }
-
-    const result = extraction.raw_result as typeof MOCK_EXTRACTION_RESULT;
 
     // Update property fields from extraction
     await this.prisma.property.update({

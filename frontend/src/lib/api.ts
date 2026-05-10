@@ -70,7 +70,10 @@ export const api = {
     },
     get: (propertyId: string) =>
       request<ExtractionResult>(`/properties/${propertyId}/extraction`),
-    apply: (propertyId: string) =>
-      request<Property>(`/properties/${propertyId}/extraction/apply`, { method: 'POST' }),
+    apply: (propertyId: string, data?: unknown) =>
+      request<Property>(`/properties/${propertyId}/extraction/apply`, {
+        method: 'POST',
+        body: data ? JSON.stringify({ raw_result: data }) : undefined,
+      }),
   },
 };

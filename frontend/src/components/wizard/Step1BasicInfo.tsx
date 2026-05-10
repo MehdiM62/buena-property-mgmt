@@ -72,10 +72,10 @@ export default function Step1BasicInfo({ property, saving, onSave, onExtractionA
     }
   };
 
-  const handleApply = async () => {
+  const handleApply = async (data: NonNullable<ExtractionResult['raw_result']>) => {
     if (!property) return;
     try {
-      const updated = await api.extraction.apply(property.id);
+      const updated = await api.extraction.apply(property.id, data);
       onExtractionApplied(updated as Property);
       setShowReview(false);
     } catch (e: any) {
@@ -251,7 +251,7 @@ export default function Step1BasicInfo({ property, saving, onSave, onExtractionA
       {showReview && extraction?.raw_result && (
         <ExtractionReview
           extraction={extraction}
-          onApply={handleApply}
+          onApply={(data) => handleApply(data)}
           onClose={() => setShowReview(false)}
         />
       )}
